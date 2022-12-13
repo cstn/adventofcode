@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "day1": "node ./src/2022/day1",
+    "day2": "node ./src/2022/day2",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
