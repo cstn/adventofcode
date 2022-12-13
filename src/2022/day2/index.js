@@ -6,13 +6,14 @@ const Shape = {
     Scissors: 'Scissors',
 };
 
-const Code = {
-    'A': Shape.Rock,
-    'B': Shape.Paper,
-    'C': Shape.Scissors,
-    'X': Shape.Rock,
-    'Y': Shape.Paper,
-    'Z': Shape.Scissors,
+const ShapeCode = {
+    A: Shape.Rock,
+    B: Shape.Paper,
+    C: Shape.Scissors,
+    // part one code: X, Y, Z
+    X: Shape.Rock,
+    Y: Shape.Paper,
+    Z: Shape.Scissors,
 };
 
 const ShapeScore = {
@@ -21,58 +22,119 @@ const ShapeScore = {
     [Shape.Scissors]: 3,
 };
 
-const splitIntoGames = (text) => text.split(/\r?\n/).map((line) => line.split(' '));
+const Ending = {
+    Loss: 'loss',
+    Draw: 'draw',
+    Win: 'win',
+};
 
-const decode = (token) => Code[token];
+const EndingCode = {
+    X: Ending.Loss,
+    Y: Ending.Draw,
+    Z: Ending.Win,
+};
+
+const EndingScore = {
+    [Ending.Loss]: 0,
+    [Ending.Draw]: 3,
+    [Ending.Win]: 6,
+};
+
+const splitIntoGames = (text) => text.split(/\r?\n/).map((line) => line.split(' '));
 
 const play = (a, b) => {
     if (a === Shape.Rock && b === Shape.Scissors) {
-        return -1;
+        return Ending.Loss;
     }
     if (a === Shape.Scissors && b === Shape.Rock) {
-        return 1;
+        return Ending.Win;
     }
 
     if (a === Shape.Scissors && b === Shape.Paper) {
-        return -1;
+        return Ending.Loss;
     }
     if (a === Shape.Paper && b === Shape.Scissors) {
-        return 1;
+        return Ending.Win;
     }
 
     if (a === Shape.Paper && b === Shape.Rock) {
-        return -1;
+        return Ending.Loss;
     }
     if (a === Shape.Rock && b === Shape.Paper) {
-        return 1;
+        return Ending.Win;
     }
 
-    return 0;
+    return Ending.Draw;
 };
 
-const score = (a, b) => {
-    const opponentChoice = decode(a);
-    const playerChoice = decode(b);
+const score = (opponentChoice, playerChoice) => {
     const game = play(opponentChoice, playerChoice);
 
-    if (game < 0) {
-        return ShapeScore[playerChoice] + 0;
-    }
-
-    if (game > 0) {
-        return ShapeScore[playerChoice] + 6;
-    }
-
-    return ShapeScore[playerChoice] + 3;
+    return EndingScore[game];
 };
+
+const calcPlayerChoice = (opponentChoice, result) => {
+    if (opponentChoice === Shape.Rock && result === Ending.Loss) {
+        return Shape.Scissors;
+    }
+    if (opponentChoice === Shape.Rock && result === Ending.Draw) {
+        return Shape.Rock;
+    }
+    if (opponentChoice === Shape.Rock && result === Ending.Win) {
+        return Shape.Paper;
+    }
+
+    if (opponentChoice === Shape.Paper && result === Ending.Loss) {
+        return Shape.Rock;
+    }
+    if (opponentChoice === Shape.Paper && result === Ending.Draw) {
+        return Shape.Paper;
+    }
+    if (opponentChoice === Shape.Paper && result === Ending.Win) {
+        return Shape.Scissors;
+    }
+
+    if (opponentChoice === Shape.Scissors && result === Ending.Loss) {
+        return Shape.Paper;
+    }
+    if (opponentChoice === Shape.Scissors && result === Ending.Draw) {
+        return Shape.Scissors;
+    }
+    if (opponentChoice === Shape.Scissors && result === Ending.Win) {
+        return Shape.Rock;
+    }
+
+    return null;
+}
 
 const partOne = () => {
     const text = readFileContent(`${__dirname}/input`);
     const games = splitIntoGames(text);
 
-    const totalScore = games.reduce((acc, curr) => acc + score(...curr), 0);
+    const totalScore = games.reduce((acc, curr) => {
+        const opponentChoice = ShapeCode[curr[0]];
+        const playerChoice = ShapeCode[curr[1]];
+
+        return acc + score(opponentChoice, playerChoice) + ShapeScore[playerChoice];
+    }, 0);
 
     console.log(`Part one: Total score after ${games.length} games:`, totalScore);
 };
 
+const partTwo = () => {
+    const text = readFileContent(`${__dirname}/input`);
+    const games = splitIntoGames(text);
+
+    const totalScore = games.reduce((acc, curr) => {
+        const opponentChoice = ShapeCode[curr[0]];
+        const result = EndingCode[curr[1]];
+        const playerChoice = calcPlayerChoice(opponentChoice, result);
+
+        return acc + score(opponentChoice, playerChoice) + ShapeScore[playerChoice]; 
+    }, 0);
+
+    console.log(`Part two: Total score after ${games.length} games:`, totalScore);
+};
+
 partOne();
+partTwo();
