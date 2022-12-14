@@ -6,6 +6,8 @@ const sum = (numbers) => numbers.reduce((acc, curr) => acc + curr, 0);
 
 const max = (numbers) => numbers.reduce((acc, curr) => (curr > acc ? curr : acc), 0);
 
+const top = (numbers, amount) => [...numbers].sort((a, b) => b - a).slice(0, amount);
+
 const partOne = () => {
   const text = fs.readFileSync(`${__dirname}/input.txt`, 'utf8');
   const calories = splitIntoBlocks(text);
@@ -14,4 +16,14 @@ const partOne = () => {
   console.log('Maximum calories:', max(calories.map(sum)));
 };
 
+const partTwo = () => {
+  const text = fs.readFileSync(`${__dirname}/input.txt`, 'utf8');
+  const calories = splitIntoBlocks(text);
+
+  const topCalories = top(calories.map(sum), 3);
+  // eslint-disable-next-line no-console
+  console.log('Top calories:', topCalories, `sum = ${sum(topCalories)}`);
+};
+
 partOne();
+partTwo();
