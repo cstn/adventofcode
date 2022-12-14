@@ -20,7 +20,6 @@ const partOne = () => {
   const text = fs.readFileSync(`${__dirname}/input.txt`, 'utf-8');
   const priorities = text
     .split(/\n/)
-    .filter((line) => line.trim().length)
     .map(splitIntoCompartments)
     .map((rucksack) => findShared(...rucksack)?.[0])
     .map((item) => priority(item));
@@ -35,7 +34,6 @@ const partTwo = () => {
   const text = fs.readFileSync(`${__dirname}/input.txt`, 'utf-8');
   const priorities = text
     .split(/\n/)
-    .filter((line) => line.trim().length)
     .map((line) => line.split(''))
     .reduce((groups, rucksack, index) => {
       const groupIndex = Math.floor(index / 3);

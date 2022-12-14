@@ -7,6 +7,7 @@
     "day1": "node ./src/2022/day1",
     "day2": "node ./src/2022/day2",
     "day3": "node ./src/2022/day3",
+    "day4": "node ./src/2022/day4",
     "lint": "eslint src/",
     "prettier": "prettier --write ./src",
     "test": "echo \"Error: no test specified\" && exit 1"
