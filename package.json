@@ -1,12 +1,14 @@
 {
   "name": "adventofcode",
   "version": "1.0.0",
-  "description": "",
+  "description": "Just for fun: solutions of https://adventofcode.com/",
   "main": "index.js",
   "scripts": {
     "day1": "node ./src/2022/day1",
     "day2": "node ./src/2022/day2",
+    "day3": "node ./src/2022/day3",
     "lint": "eslint src/",
+    "prettier": "prettier --write ./src",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -22,6 +24,8 @@
   "devDependencies": {
     "eslint": "^8.29.0",
     "eslint-config-airbnb-base": "^15.0.0",
-    "eslint-plugin-import": "^2.26.0"
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-import": "^2.26.0",
+    "prettier": "2.8.1"
   }
 }
