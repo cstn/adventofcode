@@ -118,7 +118,6 @@ const partOne = () => {
     return acc + score(opponentChoice, playerChoice) + ShapeScore[playerChoice];
   }, 0);
 
-  // eslint-disable-next-line no-console
   console.log(`Part one: Total score after ${games.length} games:`, totalScore);
 };
 
@@ -134,7 +133,6 @@ const partTwo = () => {
     return acc + score(opponentChoice, playerChoice) + ShapeScore[playerChoice];
   }, 0);
 
-  // eslint-disable-next-line no-console
   console.log(`Part two: Total score after ${games.length} games:`, totalScore);
 };
 

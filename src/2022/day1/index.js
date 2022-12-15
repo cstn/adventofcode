@@ -12,7 +12,6 @@ const partOne = () => {
   const text = fs.readFileSync(`${__dirname}/input.txt`, 'utf8');
   const calories = splitIntoBlocks(text);
 
-  // eslint-disable-next-line no-console
   console.log('Maximum calories:', max(calories.map(sum)));
 };
 
@@ -21,7 +20,7 @@ const partTwo = () => {
   const calories = splitIntoBlocks(text);
 
   const topCalories = top(calories.map(sum), 3);
-  // eslint-disable-next-line no-console
+
   console.log('Top calories:', topCalories, `sum = ${sum(topCalories)}`);
 };
 

@@ -26,7 +26,6 @@ const partOne = () => {
 
   const result = sum(priorities);
 
-  // eslint-disable-next-line no-console
   console.log('Part1: sum of the priorities', result);
 };
 
@@ -47,7 +46,6 @@ const partTwo = () => {
 
   const result = sum(priorities);
 
-  // eslint-disable-next-line no-console
   console.log('Part2: sum of priority badges', result);
 };
 

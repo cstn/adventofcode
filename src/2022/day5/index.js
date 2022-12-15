@@ -80,7 +80,5 @@ const main = (filename, mode) => {
   return getTop(finalStacks).filter(Boolean).join('');
 };
 
-// eslint-disable-next-line no-console
 console.log('Part 1: top of each stack with CateMover 9000', main('input.txt', Mode.Single));
-// eslint-disable-next-line no-console
 console.log('Part 2: top of each stack with CrateMover 9001', main('input.txt', Mode.Multiple));

@@ -16,7 +16,6 @@ const partOne = (filename) => {
     ])
     .filter((pair) => contains(...pair));
 
-  // eslint-disable-next-line no-console
   console.log('Part 1: assignment pairs fully containing the other', result.length)
 };
 
@@ -33,7 +32,6 @@ const partTwo = (filename) => {
     ])
     .filter((pair) => overlaps(...pair));
 
-  // eslint-disable-next-line no-console
   console.log('Part 2: assignment pairs overlapping', result.length)
 };
 
