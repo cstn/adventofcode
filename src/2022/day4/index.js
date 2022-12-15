@@ -3,7 +3,7 @@ const fs = require('fs');
 const contains = (a, b) => a.from <= b.from && a.to >= b.to || a.from >= b.from && a.to <= b.to;
 const overlaps = (a, b) => contains(a, b) || a.from <= b.from && a.to >= b.from || a.from >= b.from && a.from <= b.to;
 
-const partOne = (filename = 'input.txt') => {
+const partOne = (filename) => {
   const text = fs.readFileSync(`${__dirname}/${filename}`, 'utf-8');
 
   const result = text
@@ -20,7 +20,7 @@ const partOne = (filename = 'input.txt') => {
   console.log('Part 1: assignment pairs fully containing the other', result.length)
 };
 
-const partTwo = (filename = 'input.txt') => {
+const partTwo = (filename) => {
   const text = fs.readFileSync(`${__dirname}/${filename}`, 'utf-8');
 
   const result = text

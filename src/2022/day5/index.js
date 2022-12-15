@@ -1,5 +1,10 @@
 const fs = require('fs');
 
+const Mode = {
+  Single: 'single',     // CrateMover 9000
+  Multiple: 'multiple', // CrateMover 9001
+};
+
 const parseMove = (line) => {
   const tokens = line.split(/\s/);
 
@@ -42,40 +47,40 @@ const parseInput = (text) => {
 
 const getTop = (stacks) => stacks.map((stack) => stack.length ? stack[stack.length - 1] : '');
 
-const applyMove = (stacks, { move, from, to }) => {
+const applyMove = (mode) => (stacks, { move, from, to }) => {
   const nextStacks = [...stacks];
   const fromIndex = from - 1;
   const toIndex = to - 1;
 
-  const crates = stacks[fromIndex].slice(-move).reverse();
+  const crates = mode === Mode.Multiple ? stacks[fromIndex].slice(-move) : stacks[fromIndex].slice(-move).reverse();
   nextStacks[fromIndex] = [...nextStacks[fromIndex].slice(0, nextStacks[fromIndex].length - move)];
   nextStacks[toIndex] = [...nextStacks[toIndex], ...crates];
 
   return nextStacks;
 }
 
-const run = (stacks, script) => {
+const run = (stacks, script, applyFunction) => {
   if (!script.length) {
     return stacks;
   }
 
   const [scriptLine, ...restScript] = script;
-  const nextStacks = applyMove(stacks, scriptLine);
+  const nextStacks = applyFunction(stacks, scriptLine);
 
-  return run(nextStacks, restScript);
+  return run(nextStacks, restScript, applyFunction);
 };
 
-const partOne = (filename = 'input.txt') => {
+const main = (filename, mode) => {
   const text = fs.readFileSync(`${__dirname}/${filename}`, 'utf-8');
 
   const { stacks, script } = parseInput(text);
 
-  const finalStacks = run(stacks, script);
+  const finalStacks = run(stacks, script, applyMove(mode));
 
-  const result = getTop(finalStacks).filter(Boolean).join('');
-
-  // eslint-disable-next-line no-console
-  console.log('Part 1: top of each stack', result);
+  return getTop(finalStacks).filter(Boolean).join('');
 };
 
-partOne('input.txt');
+// eslint-disable-next-line no-console
+console.log('Part 1: top of each stack with CateMover 9000', main('input.txt', Mode.Single));
+// eslint-disable-next-line no-console
+console.log('Part 2: top of each stack with CrateMover 9001', main('input.txt', Mode.Multiple));
