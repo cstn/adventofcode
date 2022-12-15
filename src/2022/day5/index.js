@@ -19,14 +19,13 @@ const parseInput = (text) => {
 
   const stackLabels = lines[separatorIndex - 1].split(/\s*/).filter(Boolean);
   const numberOfStacks = stackLabels.length;
-  const reversedStacks = [...stackLines].reverse();
 
-  const stacks = reversedStacks
+  const stacks = stackLines
     .reduce((acc, curr) => {
       for (let i = 0; i < numberOfStacks; i += 1) {
         const crate = curr[i * 4 + 1];
         if (crate && crate !== ' ') {
-          acc[i] = [...acc[i], crate];
+          acc[i] = [crate, ...acc[i]];
         }
       }
 
@@ -43,18 +42,22 @@ const parseInput = (text) => {
 
 const getTop = (stacks) => stacks.map((stack) => stack.length ? stack[stack.length - 1] : '');
 
-const run = (stacks, script) =>
-  script.reduce((acc, curr) => {
-    const { move, from, to } = curr;
-    const fromIndex = from - 1;
-    const toIndex = to - 1;
+const run = (stacks, script) => {
+  if (!script.length) {
+    return stacks;
+  }
 
-    const crates = acc[fromIndex].slice(-move);
-    acc[fromIndex] = [...acc[fromIndex].slice(0, acc[fromIndex].length - move)];
-    acc[toIndex] = [...acc[toIndex], ...crates];
+  const [{ move, from, to }, ...restScript] = script;
+  const nextStacks = [...stacks];
+  const fromIndex = from - 1;
+  const toIndex = to - 1;
 
-    return acc;
-  }, stacks);
+  const crates = stacks[fromIndex].slice(-move).reverse();
+  nextStacks[fromIndex] = [...nextStacks[fromIndex].slice(0, nextStacks[fromIndex].length - move)];
+  nextStacks[toIndex] = [...nextStacks[toIndex], ...crates];
+
+  return run(nextStacks, restScript);
+};
 
 const partOne = (filename = 'input.txt') => {
   const text = fs.readFileSync(`${__dirname}/${filename}`, 'utf-8');
@@ -69,4 +72,4 @@ const partOne = (filename = 'input.txt') => {
   console.log('Part 1: top of each stack', result);
 };
 
-partOne('sample.txt');
+partOne('input.txt');
