@@ -42,12 +42,7 @@ const parseInput = (text) => {
 
 const getTop = (stacks) => stacks.map((stack) => stack.length ? stack[stack.length - 1] : '');
 
-const run = (stacks, script) => {
-  if (!script.length) {
-    return stacks;
-  }
-
-  const [{ move, from, to }, ...restScript] = script;
+const applyMove = (stacks, { move, from, to }) => {
   const nextStacks = [...stacks];
   const fromIndex = from - 1;
   const toIndex = to - 1;
@@ -55,6 +50,17 @@ const run = (stacks, script) => {
   const crates = stacks[fromIndex].slice(-move).reverse();
   nextStacks[fromIndex] = [...nextStacks[fromIndex].slice(0, nextStacks[fromIndex].length - move)];
   nextStacks[toIndex] = [...nextStacks[toIndex], ...crates];
+
+  return nextStacks;
+}
+
+const run = (stacks, script) => {
+  if (!script.length) {
+    return stacks;
+  }
+
+  const [scriptLine, ...restScript] = script;
+  const nextStacks = applyMove(stacks, scriptLine);
 
   return run(nextStacks, restScript);
 };
