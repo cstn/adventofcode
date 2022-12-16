@@ -1,6 +1,7 @@
 const fs = require('fs');
 
 const isCommand = (line) => line.startsWith('$');
+
 const getCommand = (line) => line.replace('$ ', '').split(/\s/);
 
 const isDir = (line) => line.startsWith('dir ');
@@ -37,7 +38,7 @@ const traverseLog = (lines) => {
   return sizes;
 };
 
-const main = (filename, maxSize) => {
+const partOne = (filename, maxSize) => {
   const text = fs.readFileSync(`${__dirname}/${filename}`, 'utf-8');
 
   return Object.values(traverseLog(text.split(/\n/)))
@@ -45,4 +46,18 @@ const main = (filename, maxSize) => {
     .reduce((acc, curr) => acc + curr, 0);
 };
 
-console.log('Part 1:', main('input.txt', 100000));
+const partTwo = (filename, totalSpace, updateSpace) => {
+  const text = fs.readFileSync(`${__dirname}/${filename}`, 'utf-8');
+
+  // does not work, do not know why
+  const sizes = traverseLog(text.split(/\n/));
+  const unusedSpace = totalSpace - sizes['/'];
+  const requiredSpace = updateSpace - unusedSpace;
+
+  return Object.values(sizes)
+    .filter((size) => size >= requiredSpace)
+    .sort((a, b) => a - b)[0];
+};
+
+console.log('Part 1:', partOne('input.txt', 100000));
+console.log('Part 2:', partTwo('input.txt', 70000000, 30000000));
