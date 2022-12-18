@@ -28,6 +28,33 @@ const isVisible = (grid, rowIndex, colIndex) => {
   return isVisibleFromLeft || isVisibleFromRight || isVisibleFromTop || isVisibleFromBottom;
 };
 
+const countToLargerTree = (heights, tree) => {
+  const largerIndex = heights.findIndex((height) => height >= tree);
+
+  return largerIndex === -1 ? heights.length : largerIndex + 1;
+}
+
+const scenicScore = (grid, rowIndex, colIndex) => {
+  const row = getRow(grid, rowIndex);
+  const col = getCol(grid, colIndex);
+  const height = grid[rowIndex][colIndex];
+
+  const leftTreesInView = colIndex === 0
+    ? 0
+    : countToLargerTree(row.slice(0, colIndex).reverse(), height);
+  const rightTreesInView = colIndex === col.length - 1 || colIndex === col.length - 1
+    ? 0
+    : countToLargerTree(row.slice(colIndex + 1, row.length + 1), height);
+  const topTreesInView = rowIndex === 0
+    ? 0
+    : countToLargerTree(col.slice(0, rowIndex).reverse(), height);
+  const bottomTreesInView = rowIndex === grid.length - 1 || colIndex === col.length - 1
+    ? 0
+    : countToLargerTree(col.slice(rowIndex + 1, col.length + 1), height);
+
+  return leftTreesInView * rightTreesInView * topTreesInView * bottomTreesInView;
+};
+
 const partOne = (filename) => {
   const text = fs.readFileSync(`${__dirname}/${filename}`, 'utf-8');
 
@@ -35,10 +62,28 @@ const partOne = (filename) => {
 
   const visibleMap = grid.map((row, rowIndex) =>
     getRow(grid, rowIndex)
-      .map((col, colIndex) => isVisible(grid, rowIndex, colIndex))
+      .map((col, colIndex) => isVisible(grid, rowIndex, colIndex)),
   );
 
-  return visibleMap.reduce((acc, curr) => acc + curr.filter(Boolean).length, 0);
+  return visibleMap.reduce((acc, row) => acc + row.filter(Boolean).length, 0);
+};
+
+const partTwo = (filename) => {
+  const text = fs.readFileSync(`${__dirname}/${filename}`, 'utf-8');
+
+  const grid = scanGrid(text);
+
+  const scoreMap = grid.map((row, rowIndex) =>
+    getRow(grid, rowIndex)
+      .map((col, colIndex) => scenicScore(grid, rowIndex, colIndex)),
+  );
+
+  return scoreMap.reduce((acc, row) => {
+    const maxInRow = Math.max(...row);
+
+    return maxInRow > acc ? maxInRow : acc;
+  }, 0);
 };
 
 console.log('Part 1:', partOne('input.txt'));
+console.log('Part 2:', partTwo('input.txt'));
