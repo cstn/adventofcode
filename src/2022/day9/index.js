@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 const fs = require('fs');
 
 const parseMotionScript = (text) => text.split(/\n/).map((line) => {
@@ -40,38 +41,41 @@ const move = (position, direction) => {
   return position;
 }
 
-const runMotionScript = (motions, head, tail) => {
+const runMotionScript = (motions, head, tails) => {
   let currentHead = head;
-  let currentTail = tail;
 
   return motions.reduce((acc, curr) => {
     for (let stepCount = 0; stepCount < curr.steps; stepCount += 1) {
       // move head
       currentHead = move(currentHead, curr.direction);
 
-      // move tail
-      if (currentTail.y !== currentHead.y && Math.abs(currentTail.x - currentHead.x) === 2) {
-        currentTail.y = currentHead.y;
-      } else if (currentTail.x !== currentHead.x && Math.abs(currentTail.y - currentHead.y) === 2) {
-        currentTail.x = currentHead.x;
-      }
+      for (let tailCount = 0; tailCount < tails.length; tailCount += 1) {
+        const predecessor = tailCount === 0 ? currentHead : tails[tailCount - 1];
 
-      if (currentTail.y === currentHead.y && Math.abs(currentTail.x - currentHead.x) === 2) {
-        currentTail = move(currentTail, curr.direction);
-      } else if (currentTail.x === currentHead.x && Math.abs(currentTail.y - currentHead.y) === 2) {
-        currentTail = move(currentTail, curr.direction);
-      }
+        // move tail
+        if (tails[tailCount].y !== predecessor.y && Math.abs(tails[tailCount].x - predecessor.x) === 2) {
+          tails[tailCount].y = predecessor.y;
+        } else if (tails[tailCount].x !== predecessor.x && Math.abs(tails[tailCount].y - predecessor.y) === 2) {
+          tails[tailCount].x = predecessor.x;
+        }
 
-      // remember current tail position
-      // eslint-disable-next-line no-loop-func
-      if (!acc.find((position) => position.x === currentTail.x && position.y === currentTail.y)) {
-        // eslint-disable-next-line no-param-reassign
-        acc = [...acc, { ...currentTail }];
+        if (tails[tailCount].y === predecessor.y && Math.abs(tails[tailCount].x - predecessor.x) === 2) {
+          tails[tailCount] = move(tails[tailCount], curr.direction);
+        } else if (tails[tailCount].x === predecessor.x && Math.abs(tails[tailCount].y - predecessor.y) === 2) {
+          tails[tailCount] = move(tails[tailCount], curr.direction);
+        }
+
+        // remember current tail position
+        // eslint-disable-next-line no-loop-func
+        if (!acc.find((position) => position.x === tails[tailCount].x && position.y === tails[tailCount].y)) {
+          // eslint-disable-next-line no-param-reassign
+          acc = [...acc, { ...tails[tailCount] }];
+        }
       }
     }
 
     return acc;
-  }, [tail]);
+  }, [tails[0]]);
 }
 
 const partOne = (filename) => {
@@ -79,9 +83,20 @@ const partOne = (filename) => {
   const motions = parseMotionScript(text);
 
   const head = { x: 1, y: 1 };
-  const tail = { x: 1, y: 1 };
+  const tails = [{ x: 1, y: 1 }];
 
-  return runMotionScript(motions, head, tail).length;
+  return runMotionScript(motions, head, tails).length;
+};
+
+const partTwo = (filename) => {
+  const text = fs.readFileSync(`${__dirname}/${filename}`, 'utf-8');
+  const motions = parseMotionScript(text);
+
+  const head = { x: 1, y: 1 };
+  const tails = new Array(9).fill({ x: 1, y: 1 });
+
+  return runMotionScript(motions, head, tails).length;
 };
 
 console.log('Part 1:', partOne('input.txt'));
+console.log('Part 2:', partTwo('input.txt'));
