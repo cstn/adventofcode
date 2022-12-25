@@ -4,58 +4,60 @@ const parseInput = (text) =>
   text
     .split(/\n\n/)
     .map((packages) => packages.split(/\n/))
-    .map(([left, right]) => ([JSON.parse(left), JSON.parse(right)]));
+    .map(([left, right]) => ({ left: JSON.parse(left), right: JSON.parse(right)}));
 
-const compare = ([a, b]) => {
-  const firstA = a[0];
-  const firstB = b[0];
+const compare = (a, b) => {
   // both values are integers
-  if (typeof firstA === 'number' && typeof firstB === 'number') {
-    if (firstA < firstB) {
-      return true;
+  if (typeof a === 'number' && typeof b === 'number') {
+    if (a < b) {
+      return -1;
     }
-    if (firstA > firstB) {
-      return false
+    if (a > b) {
+      return 1;
     }
 
-    return compare([a.slice(1), b.slice(1)]);
+    return 0;
   }
 
   // both values are lists
-  if (Array.isArray(firstA) && Array.isArray(firstB)) {
-    const minLength = Math.min(firstA.length, firstB.length);
+  if (Array.isArray(a) && Array.isArray(b)) {
+    const minLength = Math.min(a.length, b.length);
 
     for (let i = 0; i < minLength; i += 1) {
-      if (!compare([firstA[i], firstB[i]])) {
-        return false;
+      const result = compare(a[i], b[i])
+      if (result !== 0) {
+        return result;
       }
     }
 
-    if (firstA.length < firstB.length) {
-      return true;
+    if (a.length < b.length) {
+      return -1;
     }
-    if (firstA.length > firstB.length) {
-      return false;
+    if (a.length > b.length) {
+      return +1;
     }
 
-    return compare([firstA.slice(1), firstB.slice(1)]);
+    return 0;
   }
 
   // exactly one value is an integer
-  if (Array.isArray(firstA) && typeof firstB === 'number') {
-    return compare([firstA, [firstB]]);
+  if (Array.isArray(a) && typeof b === 'number') {
+    return compare(a, [b]);
   }
-  if (typeof firstA === 'number' && Array.isArray(firstB)) {
-    return compare([[firstA], firstB]);
+  if (typeof a === 'number' && Array.isArray(b)) {
+    return compare([a], b);
   }
 
-  return false;
+  return 0;
 };
 
 const partOne = (filename) => {
   const text = fs.readFileSync(`${__dirname}/${filename}`, 'utf-8');
   const data = parseInput(text);
-  return data.map(compare).reduce((acc, curr, index) => curr ? acc + index + 1 : acc, 0);
+
+  return data
+    .map(({ left, right}) => compare(left, right))
+    .reduce((acc, curr, index) => curr < 0 ? acc + index + 1 : acc, 0);
 };
 
-console.log('Part 1:', partOne('sample.txt'));
+console.log('Part 1:', partOne('input.txt'));
