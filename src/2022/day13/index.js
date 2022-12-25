@@ -1,11 +1,5 @@
 const fs = require('fs');
 
-const parseInput = (text) =>
-  text
-    .split(/\n\n/)
-    .map((packages) => packages.split(/\n/))
-    .map(([left, right]) => ({ left: JSON.parse(left), right: JSON.parse(right)}));
-
 const compare = (a, b) => {
   // both values are integers
   if (typeof a === 'number' && typeof b === 'number') {
@@ -53,11 +47,26 @@ const compare = (a, b) => {
 
 const partOne = (filename) => {
   const text = fs.readFileSync(`${__dirname}/${filename}`, 'utf-8');
-  const data = parseInput(text);
+  const data = text
+    .split(/\n\n/)
+    .map((packages) => packages.split(/\n/))
+    .map(([left, right]) => ({ left: JSON.parse(left), right: JSON.parse(right) }));
 
   return data
-    .map(({ left, right}) => compare(left, right))
+    .map(({ left, right }) => compare(left, right))
     .reduce((acc, curr, index) => curr < 0 ? acc + index + 1 : acc, 0);
 };
 
+const partTwo = (filename) => {
+  const text = fs.readFileSync(`${__dirname}/${filename}`, 'utf-8');
+  const data = text.split(/\n/).filter(Boolean).map((line) => JSON.parse(line));
+
+  const sortedData = [...data, [[2]], [[6]]].sort(compare);
+  const firstDividerIndex = sortedData.findIndex((value) => Array.isArray(value) && value.length === 1 && Array.isArray(value[0]) && value[0].length === 1 && value[0][0] === 2);
+  const secondDividerIndex = sortedData.findIndex((value) => Array.isArray(value) && value.length === 1 && Array.isArray(value[0]) && value[0].length === 1 && value[0][0] === 6);
+
+  return (firstDividerIndex + 1) * (secondDividerIndex + 1);
+};
+
 console.log('Part 1:', partOne('input.txt'));
+console.log('Part 2:', partTwo('input.txt'));
