@@ -1,20 +1,20 @@
-const fs = require('fs');
+import * as fs from 'fs';
 
-const Shape = {
-  Rock: 'Rock',
-  Paper: 'Paper',
-  Scissors: 'Scissors',
-};
+enum Shape {
+  Rock = 'Rock',
+  Paper = 'Paper',
+  Scissors = 'Scissors',
+}
 
-const ShapeCode = {
-  A: Shape.Rock,
-  B: Shape.Paper,
-  C: Shape.Scissors,
+enum ShapeCode {
+  A = Shape.Rock,
+  B = Shape.Paper,
+  C = Shape.Scissors,
   // part one code: X, Y, Z
-  X: Shape.Rock,
-  Y: Shape.Paper,
-  Z: Shape.Scissors,
-};
+  X = Shape.Rock,
+  Y = Shape.Paper,
+  Z = Shape.Scissors,
+}
 
 const ShapeScore = {
   [Shape.Rock]: 1,
@@ -22,11 +22,11 @@ const ShapeScore = {
   [Shape.Scissors]: 3,
 };
 
-const Ending = {
-  Loss: 'loss',
-  Draw: 'draw',
-  Win: 'win',
-};
+enum Ending  {
+  Loss = 'loss',
+  Draw = 'draw',
+  Win = 'win',
+}
 
 const EndingCode = {
   X: Ending.Loss,
@@ -40,9 +40,9 @@ const EndingScore = {
   [Ending.Win]: 6,
 };
 
-const splitIntoGames = (text) => text.split(/\r?\n/).map((line) => line.split(' '));
+const splitIntoGames = (text: string) => text.split(/\r?\n/).map((line: string) => line.split(' '));
 
-const play = (a, b) => {
+const play = (a: Shape, b: Shape): Ending => {
   if (a === Shape.Rock && b === Shape.Scissors) {
     return Ending.Loss;
   }
@@ -67,13 +67,13 @@ const play = (a, b) => {
   return Ending.Draw;
 };
 
-const score = (opponentChoice, playerChoice) => {
+const score = (opponentChoice: Shape, playerChoice: Shape): number => {
   const game = play(opponentChoice, playerChoice);
 
   return EndingScore[game];
 };
 
-const calcPlayerChoice = (opponentChoice, result) => {
+const calcPlayerChoice = (opponentChoice: Shape, result: Ending): Shape => {
   if (opponentChoice === Shape.Rock && result === Ending.Loss) {
     return Shape.Scissors;
   }
@@ -107,34 +107,49 @@ const calcPlayerChoice = (opponentChoice, result) => {
   return null;
 };
 
-const partOne = () => {
-  const text = fs.readFileSync(`${__dirname}/input.txt`, 'utf8');
+const partOne = (filename: string) => {
+  const text = fs.readFileSync(`${__dirname}/${filename}`, 'utf8');
   const games = splitIntoGames(text);
 
   const totalScore = games.reduce((acc, curr) => {
-    const opponentChoice = ShapeCode[curr[0]];
-    const playerChoice = ShapeCode[curr[1]];
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    const opponentChoice = ShapeCode[curr[0]] as Shape;
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    const playerChoice = ShapeCode[curr[1]] as Shape;
 
     return acc + score(opponentChoice, playerChoice) + ShapeScore[playerChoice];
   }, 0);
 
-  console.log(`Part one: Total score after ${games.length} games:`, totalScore);
+  return {
+    games: games.length,
+    totalScore,
+  };
 };
 
-const partTwo = () => {
-  const text = fs.readFileSync(`${__dirname}/input.txt`, 'utf8');
+const partTwo = (filename: string) => {
+  const text = fs.readFileSync(`${__dirname}/${filename}`, 'utf8');
   const games = splitIntoGames(text);
 
   const totalScore = games.reduce((acc, curr) => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     const opponentChoice = ShapeCode[curr[0]];
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     const result = EndingCode[curr[1]];
     const playerChoice = calcPlayerChoice(opponentChoice, result);
 
     return acc + score(opponentChoice, playerChoice) + ShapeScore[playerChoice];
   }, 0);
 
-  console.log(`Part two: Total score after ${games.length} games:`, totalScore);
+  return {
+    games: games.length,
+    totalScore,
+  };
 };
 
-partOne();
-partTwo();
+console.log('Part 1:', partOne('input.txt'));
+console.log('Part 2:', partTwo('input.txt'));
+
