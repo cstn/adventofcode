@@ -7,7 +7,7 @@
     "compile": "tsc",
     "lint": "eslint src/",
     "prettier": "prettier --write ./src",
-    "day": "ts-node",
+    "day": "./bin/run.sh",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
