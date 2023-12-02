@@ -1,6 +1,6 @@
 import re
 
-# filename = 'sample1.txt'
+# filename = 'sample.txt'
 filename = 'input.txt'
 
 allowed = dict({
