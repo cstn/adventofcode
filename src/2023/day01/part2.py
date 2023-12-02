@@ -1,36 +1,55 @@
 # filename = 'sample2.txt'
 filename = 'input.txt'
 
-spelled_digits = dict({
-    'one': '1',
-    'two': '2',
-    'three': '3',
-    'four': '4',
-    'five': '5',
-    'six': '6',
-    'seven': '7',
-    'eight': '8',
-    'nine': '9'
-})
+def first_digit(text):
+    if len(text) == 0:
+        return ''
+    if text[:1].isdigit():
+        return text[:1]
+    if text.startswith('one'):
+        return '1'
+    if text.startswith('two'):
+        return '2'
+    if text.startswith('three'):
+        return '3'
+    if text.startswith('four'):
+        return '4'
+    if text.startswith('five'):
+        return '5'
+    if text.startswith('six'):
+        return '6'
+    if text.startswith('seven'):
+        return '7'
+    if text.startswith('eight'):
+        return '8'
+    if text.startswith('nine'):
+        return '9'
+    return first_digit(text[1:])
 
-
-def spelled(text):
-    first_token = 'notfound'
-    first_pos = 1000
-    last_token = 'notfound'
-    last_pos = -1
-    for token in list(spelled_digits):
-        if -1 < text.find(token) < first_pos:
-            first_pos = text.index(token)
-            first_token = token
-        if -1 < text.find(token) > last_pos:
-            last_pos = text.index(token)
-            last_token = token
-
-    first_digit = spelled_digits[first_token] if first_token != 'notfound' else ''
-    last_digit = spelled_digits[last_token] if last_token != 'notfound' else ''
-
-    return first_digit + text + last_digit
+def last_digit(text):
+    if len(text) == 0:
+        return ''
+    if text[-1:].isdigit():
+        return text[-1:]
+    if text.endswith('one'):
+        return '1'
+    if text.endswith('two'):
+        return '2'
+    if text.endswith('three'):
+        return '3'
+    if text.endswith('four'):
+        return '4'
+    if text.endswith('five'):
+        return '5'
+    if text.endswith('six'):
+        return '6'
+    if text.endswith('seven'):
+        return '7'
+    if text.endswith('eight'):
+        return '8'
+    if text.endswith('nine'):
+        return '9'
+    return last_digit(text[0:-1])
 
 
 with open(filename, 'r') as f:
@@ -38,11 +57,12 @@ with open(filename, 'r') as f:
 f.close()
 
 result = 0
-for line in read_data:
-    sanitized_line = spelled(line)
-    digits = [digit for (index, digit) in enumerate(list(sanitized_line)) if digit.isnumeric()]
-    calibration_value = digits[0] + digits[-1]
-    result += int(calibration_value)
-    print (line, sanitized_line, calibration_value, result)
 
-print(result)
+for line in read_data:
+    first = first_digit(line)
+    last = last_digit(line)
+    calibration_value = first + last
+    print(calibration_value)
+    result += int(calibration_value)
+
+print('Result', result)
