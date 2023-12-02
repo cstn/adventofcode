@@ -1,6 +1,7 @@
 # filename = 'sample2.txt'
 filename = 'input.txt'
 
+
 def first_digit(text):
     if len(text) == 0:
         return ''
@@ -25,6 +26,7 @@ def first_digit(text):
     if text.startswith('nine'):
         return '9'
     return first_digit(text[1:])
+
 
 def last_digit(text):
     if len(text) == 0:
