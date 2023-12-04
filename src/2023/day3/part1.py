@@ -1,6 +1,6 @@
 import numpy as np
 
-# filename = 'sample1.txt'
+# filename = 'sample.txt'
 filename = 'input.txt'
 
 
