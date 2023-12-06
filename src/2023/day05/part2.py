@@ -48,7 +48,7 @@ def main(filename):
     seed_ranges = list(map(lambda x: int(x), re.split('\s+', read_lines[0].replace('seeds: ', ''))))
     seeds = []
     for i in range(0, len(seed_ranges), 2):
-        seeds += list(range(seed_ranges[i], seed_ranges[i + 1]))
+        seeds += list(range(seed_ranges[i], seed_ranges[i] + seed_ranges[i + 1]))
 
     maps = build_maps(read_lines[2:])
 
