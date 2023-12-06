@@ -1,16 +1,20 @@
 import numpy as np
 import re
 
-filename = 'sample.txt'
-# filename = 'input.txt'
 
-with open(filename, 'r') as f:
-    read_data = list(map(lambda x: re.split(': |\s+', x), f.read().splitlines()))
-f.close()
+def read_input(name):
+    with open(name, 'r') as f:
+        lines = f.read().splitlines()
+    f.close()
+
+    return lines
 
 
-def main():
+def main(filename):
+    read_lines = read_input(filename)
     return 0
 
 
-print('Result', main())
+filename = 'sample.txt'
+# filename = 'input.txt'
+print('Result', main(filename))
