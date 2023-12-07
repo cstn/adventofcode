@@ -46,22 +46,21 @@ def build_maps(lines):
 def main(filename):
     read_lines = read_input(filename)
     seed_ranges = list(map(lambda x: int(x), re.split('\s+', read_lines[0].replace('seeds: ', ''))))
-    seeds = []
-    for i in range(0, len(seed_ranges), 2):
-        seeds += list(range(seed_ranges[i], seed_ranges[i] + seed_ranges[i + 1]))
-
     maps = build_maps(read_lines[2:])
 
-    # print('Seeds', seeds)
+    result = 100000
+    for i in range(0, len(seed_ranges), 2):
+        seeds = list(range(seed_ranges[i], seed_ranges[i] + seed_ranges[i + 1]))
+        destinations = seeds
+        j = 1
+        for current_map in maps:
+            print(str(j) + '/' + str(i + 1) + '/' + str(len(seed_ranges) / 2))
+            j = j + 1
+            destinations = [find_dest_in_map(destination, current_map) for destination in destinations]
+            minimum = min(destinations)
+            result = minimum if minimum < result else result
 
-    destinations = seeds
-    for current_map in maps:
-        # print('Step', destinations)
-        destinations = [find_dest_in_map(destination, current_map) for destination in destinations]
-
-    print('Locations', destinations)
-
-    return min(destinations)
+    return result
 
 
 # filename = 'sample.txt'
