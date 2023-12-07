@@ -10,8 +10,13 @@ def read_input(name):
     return lines
 
 
+def parse_input(lines):
+    return lines
+
+
 def main(filename):
     read_lines = read_input(filename)
+    parsed_lines = parse_input(read_lines)
     return 0
 
 
