@@ -82,9 +82,10 @@ def compare_hands(analysed_hand1, analysed_hand2):
 
 
 def compare_hands_with_cards(analysed_hand1, analysed_hand2):
-    if analysed_hand1['value'] != analysed_hand2['value']:
-        return analysed_hand1['value'] - analysed_hand2['value']
-
+    if analysed_hand1['value'] < analysed_hand2['value']:
+        return -1
+    if analysed_hand1['value'] > analysed_hand2['value']:
+        return +1
     for i in range(len(analysed_hand1['hand'])):
         if card_value(analysed_hand1['hand'][i]) < card_value(analysed_hand2['hand'][i]):
             return -1
@@ -97,10 +98,9 @@ def compare_hands_with_cards(analysed_hand1, analysed_hand2):
 def main(filename):
     read_lines = read_input(filename)
     parsed_input = parse_input(read_lines)
-    print(parsed_input)
 
     analysed_hands = [analyze_hand(line[0], int(line[1])) for line in parsed_input]
-    sorted_analysed_hands = sorted(analysed_hands, reverse=True, key=functools.cmp_to_key(compare_hands_with_cards))
+    sorted_analysed_hands = sorted(analysed_hands, reverse=False, key=functools.cmp_to_key(compare_hands_with_cards))
     print(np.array(sorted_analysed_hands))
 
     result = 0
