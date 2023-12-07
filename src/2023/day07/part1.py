@@ -36,17 +36,17 @@ def analyze_hand(hand, bid):
             other_card = list(filter(lambda x: x != card, hand)).pop()
             return {'hand': hand, 'hand_type': 'four of a kind', 'cards': [card, other_card], 'value': hand_type_value('four of a kind'),
                     'bid': bid}
-    for card in card_deck:
-        if hand.count(card) == 3:
-            other_cards = list(filter(lambda x: x != card, hand))
-            other_sorted_cards = list(filter(lambda x: x in other_cards, card_deck))
-            return {'hand': hand, 'hand_type': 'three of a kind', 'cards': [card] + other_sorted_cards,
-                'value': hand_type_value('three of a kind'), 'bid': bid}
     for card1 in card_deck:
         for card2 in card_deck:
             if card1 != card2 and hand.count(card1) == 3 and hand.count(card2) == 2:
                 return {'hand': hand, 'hand_type': 'full house', 'cards': [card1, card2], 'value': hand_type_value('full house'),
                         'bid': bid}
+    for card in card_deck:
+        if hand.count(card) == 3:
+            other_cards = list(filter(lambda x: x != card, hand))
+            other_sorted_cards = list(filter(lambda x: x in other_cards, card_deck))
+            return {'hand': hand, 'hand_type': 'three of a kind', 'cards': [card] + other_sorted_cards,
+                    'value': hand_type_value('three of a kind'), 'bid': bid}
     for card1 in card_deck:
         for card2 in card_deck:
             if card1 != card2 and hand.count(card1) == 2 and hand.count(card2) == 2:
@@ -81,13 +81,26 @@ def compare_hands(analysed_hand1, analysed_hand2):
     return 0
 
 
+def compare_hands_with_cards(analysed_hand1, analysed_hand2):
+    if analysed_hand1['value'] != analysed_hand2['value']:
+        return analysed_hand1['value'] - analysed_hand2['value']
+
+    for i in range(len(analysed_hand1['hand'])):
+        if card_value(analysed_hand1['hand'][i]) < card_value(analysed_hand2['hand'][i]):
+            return -1
+        if card_value(analysed_hand1['hand'][i]) > card_value(analysed_hand2['hand'][i]):
+            return +1
+
+    return 0
+
+
 def main(filename):
     read_lines = read_input(filename)
     parsed_input = parse_input(read_lines)
     print(parsed_input)
 
     analysed_hands = [analyze_hand(line[0], int(line[1])) for line in parsed_input]
-    sorted_analysed_hands = sorted(analysed_hands, reverse=True, key=functools.cmp_to_key(compare_hands))
+    sorted_analysed_hands = sorted(analysed_hands, reverse=True, key=functools.cmp_to_key(compare_hands_with_cards))
     print(np.array(sorted_analysed_hands))
 
     result = 0
