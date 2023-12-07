@@ -30,46 +30,46 @@ def hand_type_value(hand_type):
 def analyze_hand(hand, bid):
     for card in card_deck:
         if hand.count(card) == 5 \
-            or (card != 'J' and hand.count(card) == 4 and hand.count('J') == 1):
+            or (card != 'J' and hand.count(card) + hand.count('J') == 5):
             return {'hand': hand, 'hand_type': 'five of a kind', 'cards': [card], 'value': hand_type_value('five of a kind'), 'bid': bid}
     for card in card_deck:
         if hand.count(card) == 4 \
-            or (card != 'J' and hand.count(card) == 3 and hand.count('J') == 1) \
-            or (card != 'J' and hand.count(card) == 2 and hand.count('J') == 2):
+            or (card != 'J' and hand.count(card) + hand.count('J') == 4):
             other_card = list(filter(lambda x: x != card, hand)).pop()
             return {'hand': hand, 'hand_type': 'four of a kind', 'cards': [card, other_card], 'value': hand_type_value('four of a kind'),
                     'bid': bid}
     for card1 in card_deck:
         for card2 in card_deck:
-            if card1 != card2 and hand.count(card1) == 3 and hand.count(card2) == 2\
-                or (card1 != card2 and hand.count(card1) == 3 and hand.count(card2) == 1 and card1 != 'J' and card2 != 'J' and hand.count('J') == 1) \
-                or (card1 != card2 and hand.count(card1) == 2 and hand.count(card2) == 2 and card1 != 'J' and card2 != 'J' and hand.count('J') == 1) \
-                or (card1 != card2 and hand.count(card1) == 1 and hand.count(card2) == 2 and card1 != 'J' and card2 != 'J' and hand.count('J') == 2) \
-                or (card1 != card2 and hand.count(card1) == 2 and hand.count(card2) == 1 and card1 != 'J' and card2 != 'J' and hand.count('J') == 2):
+            if card1 == card2:
+                continue
+            if hand.count(card1) == 3 and hand.count(card2) == 2 \
+                or (card1 != 'J' and card2 != 'J' and hand.count(card1) == 3 and hand.count(card2) + hand.count('J') == 2)\
+                or (card1 != 'J' and card2 != 'J' and hand.count(card2) == 2 and hand.count(card1) + hand.count('J') == 3)\
+                or (card1 != 'J' and card2 != 'J' and hand.count('J') == 2 and hand.count(card1) == 1 and hand.count(card2) == 2)\
+                or (card1 != 'J' and card2 != 'J' and hand.count('J') == 1 and hand.count(card1) == 1 and hand.count(card2) == 3):
                 return {'hand': hand, 'hand_type': 'full house', 'cards': [card1, card2], 'value': hand_type_value('full house'),
                         'bid': bid}
     for card in card_deck:
         if hand.count(card) == 3 \
-            or (card != 'J' and hand.count(card) == 2 and hand.count('J') == 1) \
-            or (card != 'J' and hand.count(card) == 1 and hand.count('J') == 2):
+            or (card != 'J' and hand.count(card) + hand.count('J') == 3):
             other_cards = list(filter(lambda x: x != card, hand))
             other_sorted_cards = list(filter(lambda x: x in other_cards, card_deck))
             return {'hand': hand, 'hand_type': 'three of a kind', 'cards': [card] + other_sorted_cards,
                     'value': hand_type_value('three of a kind'), 'bid': bid}
     for card1 in card_deck:
         for card2 in card_deck:
-            if card1 != card2 and hand.count(card1) == 2 and hand.count(card2) == 2 \
-                or (card1 != card2 and hand.count(card1) == 2 and hand.count(card2) == 1 and card1 != 'J' and card2 != 'J' and hand.count(
-                'J') == 1) \
-                or (card1 != card2 and hand.count(card1) == 1 and hand.count(card2) == 2 and card1 != 'J' and card2 != 'J' and hand.count(
-                'J') == 1):
+            if card1 == card2:
+                continue
+            if hand.count(card1) == 2 and hand.count(card2) == 2 \
+                or (card1 != 'J' and card2 != 'J' and hand.count(card1) == 2 and hand.count(card2) + hand.count('J') == 2) \
+                or (card1 != 'J' and card2 != 'J' and hand.count(card2) == 2 and hand.count(card1) + hand.count('J') == 2):
                 other_card = list(filter(lambda x: x != card1 and x != card2, hand)).pop()
                 higher_card = card1 if card_value(card1) > card_value(card2) else card2
                 lower_card = card1 if card_value(card1) < card_value(card2) else card2
                 return {'hand': hand, 'hand_type': 'two pair', 'cards': [higher_card, lower_card, other_card],
                         'value': hand_type_value('two pair'), 'bid': bid}
     for card in card_deck:
-        if hand.count(card) == 2 or (card != 'J' and hand.count(card) == 1 and hand.count('J') == 1):
+        if hand.count(card) == 2 or (card != 'J' and hand.count(card) + hand.count('J') == 2):
             other_cards = list(filter(lambda x: x != card, hand))
             other_sorted_cards = list(filter(lambda x: x in other_cards, card_deck))
             return {'hand': hand, 'hand_type': 'one pair', 'cards': [card] + other_sorted_cards, 'value': hand_type_value('one pair'),
