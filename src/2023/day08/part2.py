@@ -29,21 +29,23 @@ def main(filename):
     read_lines = read_input(filename)
     parsed_lines = parse_input(read_lines)
     instructions = parsed_lines['instructions']
-    nodes = parsed_lines['nodes']
-    starts = list(map(lambda n: n[0], filter(lambda n: n[0].endswith('A'), nodes)))
+    nodes = dict({})
+    for n in parsed_lines['nodes']:
+        nodes[n[0]] = {'left': n[1], 'right': n[2]}
+    starts = list(filter(lambda n: n.endswith('A'), nodes.keys()))
     positions = starts
     steps = 0
     while not end_position(positions):
         for i, turn in enumerate(instructions):
             steps += 1
             for p, position in enumerate(positions):
-                node = next(filter(lambda n: n[0] == position, nodes))
+                node = nodes[position]
                 if turn == 'L':
-                    positions[p] = node[1]
+                    positions[p] = node['left']
                 elif turn == 'R':
-                    positions[p] = node[2]
+                    positions[p] = node['right']
     return steps
 
 
-print('Result', main('sample2.txt'))
+# print('Result', main('sample2.txt'))
 print('Result', main('input.txt'))
