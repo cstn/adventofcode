@@ -21,6 +21,5 @@ def main(filename):
     return 0
 
 
-filename = 'sample.txt'
-# filename = 'input.txt'
-print('Result', main(filename))
+print('Sample result', main('sample.txt'))
+print('Main result', main('inout.txt'))
