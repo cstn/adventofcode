@@ -58,7 +58,7 @@ def positions(lines):
     for y, line in enumerate(lines):
         for x, col in enumerate(line):
             if col == '#':
-                result.append({ 'x': x, 'y': y})
+                result.append({'x': x, 'y': y})
     return result
 
 
