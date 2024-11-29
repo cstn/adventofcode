@@ -1,11 +1,11 @@
-import matrix.parser as mp
-import matrix.print as mprint
+import advent.parser as ap
+import advent.print as aprint
 
 
 def main(filename):
-    parsed_lines = mp.read_parsed_input(filename)
+    parsed_lines = ap.read_parsed_input(filename)
     print('Parsed')
-    mprint.print_matrix(parsed_lines)
+    aprint.print_matrix(parsed_lines)
 
     return 0
 
