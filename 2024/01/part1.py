@@ -10,7 +10,7 @@ def distance(matrix):
 
 
 def main(filename):
-    parsed_lines = ap.read_parsed_input(filename, '\s+', dtype=int)
+    parsed_lines = ap.read_matrix_input(filename, '\s+', dtype=int)
     transposed_lines = parsed_lines.transpose()
     m.sort(transposed_lines)
 

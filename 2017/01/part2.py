@@ -14,7 +14,7 @@ def checksum(numbers):
 
 
 def main(filename):
-    parsed_lines = ap.read_parsed_input(filename)
+    parsed_lines = ap.read_matrix_input(filename)
     puzzle_input = list(map(int, parsed_lines[0][0]))
 
     result = checksum(puzzle_input)
