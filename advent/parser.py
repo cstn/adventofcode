@@ -1,13 +1,6 @@
 import numpy as np
 import re
-
-
-def read_input(name):
-    with open(name, 'r') as f:
-        lines = f.read().splitlines()
-    f.close()
-
-    return lines
+import advent.files as af
 
 
 def parse_input(lines, pattern = ', ', dtype=int):
@@ -15,14 +8,14 @@ def parse_input(lines, pattern = ', ', dtype=int):
 
 
 def read_matrix_input(filename, pattern =', ', dtype=int):
-    read_lines = read_input(filename)
+    read_lines = af.read_input(filename)
     parsed_lines = parse_input(read_lines, pattern, dtype)
 
     return parsed_lines
 
 
 def read_lists_input(filename):
-    read_lines = read_input(filename)
+    read_lines = af.read_input(filename)
     parsed_lines = [list(map(int, line.split())) for line in read_lines]
 
     return parsed_lines
