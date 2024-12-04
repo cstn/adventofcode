@@ -4,7 +4,8 @@ import advent.files as af
 
 
 def parse_input(lines, pattern = ', ', dtype=int):
-    return np.array([re.split(pattern, line) for line in lines], dtype=dtype)
+    tokens = [re.split(pattern, line) for line in lines] if pattern is not None else [list(line) for line in lines]
+    return np.array(tokens, dtype=dtype)
 
 
 def read_matrix_input(filename, pattern =', ', dtype=int):
