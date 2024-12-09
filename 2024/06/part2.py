@@ -1,6 +1,6 @@
 import numpy as np
 import advent.parser as ap
-
+from advent.print import print_matrix
 
 class Guard:
     def __init__(self, matrix):
@@ -71,26 +71,36 @@ class Guard:
 def main(filename):
     matrix_input = ap.read_matrix_input(filename, None, dtype=str)
     matrix_origin = np.copy(matrix_input)
+    guard = Guard(matrix_input)
+    start_x, start_y = guard.x, guard.y
+
+    while not guard.end_position(matrix_input):
+        guard.move(matrix_input)
+        matrix_input[guard.y, guard.x] = 'X'
+
+    distinct_positions = np.argwhere(matrix_input == 'X')
+
     max_steps = len(matrix_origin) * len(matrix_origin[0])
 
     obstacles = 0
-    for y in range(len(matrix_origin)):
-        for x in range(len(matrix_origin[y])):
-            if matrix_origin[y, x] in ('#', '^') or  (y < len(matrix_origin) - 1 and matrix_origin[y + 1, x] == '^'):
-                continue
+    for [y, x] in distinct_positions:
+        if x == start_x and y == start_y:
+            continue
 
-            matrix = np.copy(matrix_origin)
-            matrix[y, x] = 'O'
-            guard = Guard(matrix)
+        matrix = np.copy(matrix_origin)
+        matrix[y, x] = 'O'
+        guard = Guard(matrix)
 
-            step = 0
-            while not guard.end_position(matrix) and step < max_steps:
-                guard.move(matrix)
-                matrix[guard.y, guard.x] = 'X'
-                step += 1
+        step = 0
+        while not guard.end_position(matrix) and step < max_steps:
+            guard.move(matrix)
+            matrix[guard.y, guard.x] = 'X'
+            step += 1
 
-            if not guard.end_position(matrix):
-                obstacles += 1
+        if not guard.end_position(matrix):
+            obstacles += 1
+            # print_matrix(matrix)
+            # print()
 
 
     return obstacles
