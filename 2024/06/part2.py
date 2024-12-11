@@ -1,6 +1,6 @@
 import numpy as np
 import advent.parser as ap
-from advent.print import print_matrix
+
 
 class Guard:
     def __init__(self, matrix):
@@ -36,7 +36,7 @@ class Guard:
             return True
         if self.x == 0 and self.direction == 'left':
             return True
-        if self.x == len(matrix[0]) - 1 and self.direction == 'right':
+        if self.x == len(matrix[self.y]) - 1 and self.direction == 'right':
             return True
         if self.y == len(matrix) -1 and self.direction == 'down':
             return True
@@ -70,24 +70,25 @@ class Guard:
 
 def main(filename):
     matrix_input = ap.read_matrix_input(filename, None, dtype=str)
-    matrix_origin = np.copy(matrix_input)
-    guard = Guard(matrix_input)
+    size_y, size_x = matrix_input.shape
+
+    matrix_solution = np.copy(matrix_input)
+    guard = Guard(matrix_solution)
     start_x, start_y = guard.x, guard.y
+    while not guard.end_position(matrix_solution):
+        guard.move(matrix_solution)
+        matrix_solution[guard.y, guard.x] = 'X'
 
-    while not guard.end_position(matrix_input):
-        guard.move(matrix_input)
-        matrix_input[guard.y, guard.x] = 'X'
+    distinct_positions = np.argwhere(matrix_solution == 'X')
 
-    distinct_positions = np.argwhere(matrix_input == 'X')
+    max_steps = size_y * size_x
 
-    max_steps = len(matrix_origin) * len(matrix_origin[0])
-
-    obstacles = 0
+    obstacles = []
     for [y, x] in distinct_positions:
         if x == start_x and y == start_y:
             continue
 
-        matrix = np.copy(matrix_origin)
+        matrix = np.copy(matrix_input)
         matrix[y, x] = 'O'
         guard = Guard(matrix)
 
@@ -98,12 +99,14 @@ def main(filename):
             step += 1
 
         if not guard.end_position(matrix):
-            obstacles += 1
-            # print_matrix(matrix)
-            # print()
+            if not [y, x] in obstacles:
+                obstacles.append([y, x])
 
+    unique_obstacles = np.unique(obstacles, axis=0)
+    print('Obstacles', len(obstacles))
+    print('Unique obstacles', len(unique_obstacles))
 
-    return obstacles
+    return len(obstacles)
 
 
 print('Part 2')
