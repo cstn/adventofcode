@@ -102,9 +102,7 @@ def main(filename):
             if not [y, x] in obstacles:
                 obstacles.append([y, x])
 
-    unique_obstacles = np.unique(obstacles, axis=0)
     print('Obstacles', len(obstacles))
-    print('Unique obstacles', len(unique_obstacles))
 
     return len(obstacles)
 
