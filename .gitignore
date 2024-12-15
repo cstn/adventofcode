@@ -161,4 +161,4 @@ cython_debug/
 /.idea/
 
 input.txt
-smaple.txt
+sample*.txt
