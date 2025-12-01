@@ -10,15 +10,10 @@ def main(filename):
     result = 0
     for line in parsed_lines:
         direction = line[0]
-        steps = int(line[1:])
+        steps = int(line[1:]) if direction == 'R' else -int(line[1:])
 
-        if direction == 'R':
-            position += steps
-        elif direction == 'L':
-            position -= steps
-
-        if position < 0 or position >= size:
-            position = abs(position % size)
+        position += steps
+        position = abs(position % size)
 
         if position == 0:
             result += 1
