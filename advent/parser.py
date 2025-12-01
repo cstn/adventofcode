@@ -20,3 +20,8 @@ def read_lists_input(filename, dtype=int):
     parsed_lines = [list(map(dtype, line.split())) for line in read_lines]
 
     return parsed_lines
+
+def read_input(filename):
+    read_lines = af.read_input(filename)
+
+    return read_lines
