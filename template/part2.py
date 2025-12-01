@@ -10,5 +10,5 @@ def main(filename):
 
 
 print('Part 1')
-print('Sample result', main('sample.txt'))
-print('Main result', main('input.txt'))
+print('Sample result', main('sample2.txt'))
+print('Main result', main('input2.txt'))
