@@ -14,8 +14,14 @@ def read_matrix_input(filename, pattern =', ', dtype=int):
 
     return parsed_lines
 
+def read_line_input(filename, pattern =', ', dtype=int):
+    read_lines = af.read_input(filename)
+    parsed_lines = parse_input(read_lines, pattern, dtype)
 
-def read_lists_input(filename, dtype=int):
+    return parsed_lines[0]
+
+
+def read_lists_input(filename, dtype=int,):
     read_lines = af.read_input(filename)
     parsed_lines = [list(map(dtype, line.split())) for line in read_lines]
 
