@@ -9,6 +9,6 @@ def main(filename):
     return 0
 
 
-print('Part 1')
+print('Part 2')
 print('Sample result', main('sample2.txt'))
 print('Main result', main('input2.txt'))

@@ -7,7 +7,7 @@ def main(filename):
 
     result = 0
     for line in parsed_lines:
-        maximum = max(line[:len(line) - 1])
+        maximum = max(line[0:len(line) - 1])
         i = np.where(line == maximum)[0][0]
         second_maximum = max(line[i+1:])
         output = maximum * 10 + second_maximum
