@@ -6,7 +6,9 @@ def main(filename):
     parsed_lines = ap.read_matrix_input(filename, '\s+', dtype=int)
     aprint.print_matrix(parsed_lines)
 
-    return 0
+    result = 0
+
+    return result
 
 
 print('Part 1')
