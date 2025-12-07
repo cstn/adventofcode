@@ -3,4 +3,4 @@ def read_input(name):
         lines = f.read().splitlines()
     f.close()
 
-    return lines
+    return [line.strip() for line in lines]
