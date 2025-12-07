@@ -1,23 +1,17 @@
 import math
 import numpy as np
 import advent.parser as ap
+import advent.files as af
 
-
+n = 3
 def main(filename):
-    parsed_lines = ap.read_matrix_input(filename, '\s+', dtype=str)
-    worksheet = np.rot90(parsed_lines, 3)
-
+    read_lines = af.read_input(filename)
+    parsed_lines = [[line[i:i + n] for i in range(0, len(line), n)] for line in read_lines]
     result = 0
-    for row in worksheet:
-        values = [int(n) for n in row[1:]]
-        if row[0] == "+":
-            result += sum(values)
-        elif row[0] == "*":
-            result += math.prod(values)
 
     return result
 
 
 print('Part 2')
 print('Sample result', main('sample2.txt'))
-print('Main result', main('input2.txt'))
+# print('Main result', main('input2.txt'))
