@@ -9,8 +9,8 @@ def parse_input(lines, pattern=', ', dtype=int):
     return np.array(tokens, dtype=dtype)
 
 
-def read_matrix_input(filename, pattern=', ', dtype=int):
-    read_lines = af.read_input(filename)
+def read_matrix_input(filename, pattern=', ', dtype=int, strip=False):
+    read_lines = af.read_input(filename, strip=strip)
     parsed_lines = parse_input(read_lines, pattern, dtype)
 
     return parsed_lines

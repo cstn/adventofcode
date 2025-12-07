@@ -4,7 +4,7 @@ import advent.parser as ap
 
 
 def main(filename):
-    parsed_lines = ap.read_matrix_input(filename, '\s+', dtype=str)
+    parsed_lines = ap.read_matrix_input(filename, '\s+', dtype=str, strip=True)
     worksheet = np.rot90(parsed_lines, 3)
 
     result = 0
