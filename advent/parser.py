@@ -23,9 +23,9 @@ def read_line_input(filename, pattern=', ', dtype=int):
     return parsed_lines[0]
 
 
-def read_lists_input(filename, dtype=int, ):
+def read_lists_input(filename, dtype=int, split_char=' '):
     read_lines = af.read_input(filename)
-    parsed_lines = [list(map(dtype, line.split())) for line in read_lines]
+    parsed_lines = [list(map(dtype, line.split(split_char))) for line in read_lines]
 
     return parsed_lines
 
