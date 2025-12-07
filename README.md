@@ -15,7 +15,7 @@ $ deactivate
 ## Prepare
 
 ```shell
-cp -R template/ 2025/05
+cp -R template/ 2025/06
 ```
 
 ## Links 
