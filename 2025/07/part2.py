@@ -1,10 +1,12 @@
+import numpy as np
+
 import advent.parser as ap
-import advent.print as aprint
 
 
 def main(filename):
-    parsed_lines = ap.read_matrix_input(filename, '\s+', dtype=int)
-    aprint.print_matrix(parsed_lines)
+    parsed_lines = ap.read_matrix_input(filename, '', dtype=str)
+
+    pos = np.argwhere(parsed_lines == 'S')
 
     result = 0
 
