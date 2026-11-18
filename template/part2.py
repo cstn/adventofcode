@@ -4,12 +4,13 @@ import advent.print as aprint
 
 def main(filename):
     parsed_lines = ap.read_matrix_input(filename, '\s+', dtype=int)
-    print('Parsed')
     aprint.print_matrix(parsed_lines)
 
-    return 0
+    result = 0
+
+    return result
 
 
-print('Part 1')
-print('Sample result', main('sample.txt'))
-print('Main result', main('input.txt'))
+print('Part 2')
+print('Sample result', main('sample2.txt'))
+print('Main result', main('input2.txt'))
