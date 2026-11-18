@@ -10,7 +10,7 @@ def read_input(name):
 
 
 def parse_input(lines):
-    return [list(map(lambda x: int(x), re.split('\s+', line))) for line in lines]
+    return [list(map(lambda x: int(x), re.split('\\s+', line))) for line in lines]
 
 
 def create_history(line):

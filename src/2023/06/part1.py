@@ -20,7 +20,7 @@ def calc_distance(total_time, button_down_time, speed):
 
 def main(filename):
     read_lines = read_input(filename)
-    races = np.array([list(map(lambda x: int(x), re.split('\s+', line)[1:])) for line in read_lines])
+    races = np.array([list(map(lambda x: int(x), re.split('\\s+', line)[1:])) for line in read_lines])
     print(races)
 
     ways_to_win = 1

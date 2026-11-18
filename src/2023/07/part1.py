@@ -16,7 +16,7 @@ def read_input(name):
 
 
 def parse_input(lines):
-    return [re.split('\s', line) for line in lines]
+    return [re.split('\\s', line) for line in lines]
 
 
 def card_value(card):

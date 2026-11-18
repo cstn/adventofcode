@@ -14,8 +14,8 @@ def play_game(game_data, offset):
     for y, game in enumerate(game_data):
         score += 1
         [card_number, winning, scratched] = game
-        winning_numbers = list(filter(lambda x: x.strip() != '', re.split('\s+', winning)))
-        scratched_numbers = list(filter(lambda x: x.strip() != '', re.split('\s+', scratched)))
+        winning_numbers = list(filter(lambda x: x.strip() != '', re.split('\\s+', winning)))
+        scratched_numbers = list(filter(lambda x: x.strip() != '', re.split('\\s+', scratched)))
         intersection_numbers = list(set(winning_numbers) & set(scratched_numbers))
         win = len(intersection_numbers)
         win_cards = read_data[y + offset + 1: y + offset + win + 1]

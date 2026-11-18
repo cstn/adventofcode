@@ -38,14 +38,14 @@ def build_maps(lines):
                 maps.append(category_map)
             category_map = []
         else:
-            category_map.append(list(map(lambda x: int(x), re.split('\s+', line))))
+            category_map.append(list(map(lambda x: int(x), re.split('\\s+', line))))
     maps.append(category_map)
     return maps
 
 
 def main(filename):
     read_lines = read_input(filename)
-    seed_ranges = list(map(lambda x: int(x), re.split('\s+', read_lines[0].replace('seeds: ', ''))))
+    seed_ranges = list(map(lambda x: int(x), re.split('\\s+', read_lines[0].replace('seeds: ', ''))))
     maps = build_maps(read_lines[2:])
 
     result = 100000
